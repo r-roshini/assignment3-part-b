@@ -1,0 +1,86 @@
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threads;
+public class udpprgm
+{
+    public static void main(String args[] )throws Exception
+    {
+       Demo d=new Demo();
+       Console.Writeline("udp programming");
+       Console.WriteLine("enter the size");
+       int n=Convert.ToInt32();
+       d.StartListener();
+       d.insert(n);
+       d.delete();
+     }
+ }
+ class Demo
+ {
+      private const int portno=11000;
+      int q[],f=0,r=0;
+      private static void StartListener()
+      {
+           UdpClient listener=new UdpClient(listenPort);
+           IPEndPoint groupEP=new IPEndPoint(IPAddress.Any,portno);
+           try
+           {
+             while(true)
+             {
+             Console.WriteLine("Waiting for broadcast");
+             byte[] bytes=listener.Recieve(ref groupEP);
+             Console.WriteLine($"Recieved broadcast from{groupEP}:");
+             Console.WriteLine($"{encoding.ASCII.GetString(bytes.0,bytes.Length)}");
+             }
+          }
+        catch(SocketException e)
+        {
+           Console.WriteLine(e);
+         }
+         finally
+         {
+           listener.Close();
+          }
+          }
+          void insert(int n);
+          {
+            q=new int[10];
+            for(int i=0;i<n;i++)
+            {
+                  Console.WriteLine("enter"+i+"element:");
+                  int ele=Convert.ToInt32();
+                  if(r+1>10)
+                  {
+                    Console.WriteLine("lost packet"+ele);
+                    break;
+                    }
+                    else
+                    {
+                    r++;
+                    q[i]=ele;
+                    }
+                    }
+                    }
+                    void delete()
+                    {
+                    if(r==0)
+                    Console.WriteLine("no packets");
+                    else
+                    {
+                    for(int i=f;i<r;i++)
+                    {
+                     try
+                     {
+                        Thread.sleep(60000);
+                      }
+                      catch(Exception e){}
+                      Console.WriteLine("leaked packet:"+q[i]);
+                      f++;
+                    }
+                }
+                }
+        }
+        
+       
+       
